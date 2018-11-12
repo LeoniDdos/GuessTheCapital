@@ -1,13 +1,15 @@
 package com.company;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-
-    private static Map<String, String> countries = new HashMap<>();
+    private static ArrayList<CountryCapital> countryCapitalList = new ArrayList<>();
 
     public static void main(String[] args) {
         loadCountries();
@@ -26,14 +28,9 @@ public class Main {
                 while ((line = bufferedReader.readLine()) != null) {
                     values = line.split(":");
                     String country = values[0];
-                    String city = values[1];
+                    String capital = values[1];
 
-                    countries.put(country, city);
-                }
-
-                System.out.println("===Список стран и городов===");
-                for (HashMap.Entry<String, String> itrStr : countries.entrySet()) {
-                    System.out.println(itrStr.getKey() + ": " + itrStr.getValue());
+                    countryCapitalList.add(new CountryCapital(country, capital));
                 }
 
                 displayGame();
@@ -47,41 +44,43 @@ public class Main {
     }
 
     private static void displayGame() {
-        System.out.println();
-        System.out.println();
         System.out.println("Для выхода из игры напишите 0 и нажмите Enter");
         System.out.println("Напиши столицу данной страны");
 
-        String city = "";
+        String writtenCity = "";
         int score = 0;
 
-        while (!city.equals("0")) {
-            String realCity = getRandomCountry();
-            Scanner scanner = new Scanner(System.in);
-            city = scanner.next();
+        while (!writtenCity.equals("0")) {
+            CountryCapital currentCountry = getRandomCountry();
 
-            if (city.equals("0")) {
+            System.out.print("Страна: " + currentCountry.getCountry() + "; Столица: ");
+
+            Scanner scanner = new Scanner(System.in);
+            writtenCity = scanner.next();
+
+            if (writtenCity.equals("0")) {
                 break;
             }
 
-            if (city.equals(realCity)) {
-                System.out.println("Успех");
-
+            if (writtenCity.equals(currentCountry.getCapital())) {
+                System.out.println("Результат: Верно");
                 score++;
             } else {
-                System.out.println("Провал");
+                System.out.println("Результат: Неверно");
+                System.out.println("Ответ - " + currentCountry.getCapital());
             }
+
+            System.out.println();
         }
 
         System.out.println("Игра завершена");
         System.out.println("Ваш счет: " + score);
     }
 
-    private static String getRandomCountry() {
-        String country = "Германия";
+    private static CountryCapital getRandomCountry() {
+        Random random = new Random();
+        int rndIndex = random.nextInt(countryCapitalList.size());
 
-        System.out.println(country);
-
-        return countries.get(country);
+        return countryCapitalList.get(rndIndex);
     }
 }
