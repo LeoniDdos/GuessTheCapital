@@ -62,7 +62,7 @@ public class Main {
                 break;
             }
 
-            if (writtenCity.equals(currentCountry.getCapital())) {
+            if (writtenCity.toLowerCase().equals(currentCountry.getCapital().toLowerCase())) {
                 System.out.println("Результат: Верно");
                 score++;
             } else {
