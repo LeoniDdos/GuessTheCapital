@@ -50,7 +50,7 @@ public class Main {
         String writtenCity = "";
         int score = 0;
 
-        while (!writtenCity.equals("0")) {
+        while (!writtenCity.equals("0") && !countryCapitalList.isEmpty()) {
             CountryCapital currentCountry = getRandomCountry();
 
             System.out.print("Страна: " + currentCountry.getCountry() + "; Столица: ");
@@ -81,6 +81,9 @@ public class Main {
         Random random = new Random();
         int rndIndex = random.nextInt(countryCapitalList.size());
 
-        return countryCapitalList.get(rndIndex);
+        CountryCapital countryCapital = countryCapitalList.get(rndIndex);
+        countryCapitalList.remove(countryCapitalList.get(rndIndex));
+
+        return countryCapital;
     }
 }
